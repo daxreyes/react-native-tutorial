@@ -8,6 +8,8 @@ React Native Quick Start
 
 ### Steps
 
+#### Default App
+
 1. Install create-react-native-app
    - npm i -g create-react-native-app
 2. Create initial mobile app
@@ -17,3 +19,4 @@ React Native Quick Start
    - yarn start  
 4. Run the app via npm
    - npm start
+5. Open expo mobile app and scan QR code
