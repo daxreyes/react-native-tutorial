@@ -3,6 +3,9 @@ import { Button, StyleSheet, Text, View } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 
 class HomeScreen extends React.Component {
+  static navigationOptions = {
+    title: 'Home',
+  };
   render() {
     return (
       <View style={styles.container}>
@@ -19,6 +22,9 @@ class HomeScreen extends React.Component {
 }
 
 class DetailsScreen extends React.Component{
+  static navigationOptions = {
+    title: 'Details',
+  };
   render(){
       return(
       <View style={styles.container}>
