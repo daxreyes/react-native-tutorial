@@ -47,7 +47,8 @@ const styles = StyleSheet.create({
   },
 });
 
-const RootStack = StackNavigator({
+const RootStack = StackNavigator(
+  {
     Home: {
       screen: HomeScreen,
     },
@@ -57,6 +58,15 @@ const RootStack = StackNavigator({
   },
   {
     initialRouteName: 'Home',
+    navigationOptions: {
+      headerStyle: {
+        backgroundColor: '#f4511e',
+      },
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+      },
+    }
   }
 );
 

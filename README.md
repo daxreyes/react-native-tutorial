@@ -124,3 +124,28 @@ React Native Quick Start
             /* render function, etc */
         }
         ```
+    - setting styles applicable to screens in StackNavigator
+        ```
+        const RootStack = StackNavigator(
+            {
+                Home: {
+                screen: HomeScreen,
+                },
+                Details: {
+                screen: DetailsScreen
+                },
+            },
+            {
+                initialRouteName: 'Home',
+                navigationOptions: {
+                headerStyle: {
+                    backgroundColor: '#f4511e',
+                },
+                headerTintColor: '#fff',
+                headerTitleStyle: {
+                    fontWeight: 'bold',
+                },
+                }
+            }
+        );
+        ```
