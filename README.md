@@ -56,3 +56,39 @@ React Native Quick Start
             },
         });
         ```
+3. Utilize multiple screens and navigate them
+    - import a button `import { Button, StyleSheet, Text, View } from 'react-native';`
+    - add a Details Button
+        ```
+        class HomeScreen extends React.Component{
+            render(){
+                return (
+                <View style={styles.container}>
+                    <Text>Home Screen</Text>
+                    <Text>Changes you make will automatically reload.</Text>
+                    <Text>Shake your phone to open the developer menu.</Text>
+                    <Button 
+                    title = "Go Details"
+                    onPress={()=> this.props.navigation.navigate('Details')}
+                    />
+                </View>
+                );
+            }
+        }
+        ```
+    - create Details screen with Home Button
+        ```
+        class DetailsScreen extends React.Component{
+            render(){
+                return(
+                <View style={styles.container}>
+                    <Text> Details Screen</Text>
+                    <Button 
+                    title = "Go Home"
+                    onPress={()=> this.props.navigation.navigate('Home')}
+                    />
+                </View>
+                );
+            }
+        }
+        ```
