@@ -5,6 +5,13 @@ import { StackNavigator } from 'react-navigation';
 class HomeScreen extends React.Component {
   static navigationOptions = {
     title: 'Home',
+    headerRight: (
+      <Button
+        onPress={() => alert('This is a button!')}
+        title="Info"
+        // color="#fff"
+      />
+    ),
   };
   render() {
     return (

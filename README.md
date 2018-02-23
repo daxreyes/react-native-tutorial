@@ -149,3 +149,19 @@ React Native Quick Start
             }
         );
         ```
+    - add a button in the header bar
+        ```
+        class HomeScreen extends React.Component {
+            static navigationOptions = {
+                title: 'Home',
+                headerRight: (
+                <Button
+                    onPress={() => alert('This is a button!')}
+                    title="Info"
+                    // color="#fff"
+                />
+                ),
+            };
+            /* render function, etc */
+        }
+        ```
