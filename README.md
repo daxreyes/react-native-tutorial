@@ -56,7 +56,7 @@ React Native Quick Start
             },
         });
         ```
-3. Utilize multiple screens and navigate them
+3. Utilize multiple screens and [navigate](https://reactnavigation.org/docs/navigating.html) them
     - import a button `import { Button, StyleSheet, Text, View } from 'react-native';`
     - add a Details Button
         ```
