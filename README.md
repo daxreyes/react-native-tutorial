@@ -76,7 +76,7 @@ React Native Quick Start
             }
         }
         ```
-    - create Details screen with Home Button
+    - create Details screen with Go back Button
         ```
         class DetailsScreen extends React.Component{
             render(){
@@ -84,8 +84,8 @@ React Native Quick Start
                 <View style={styles.container}>
                     <Text> Details Screen</Text>
                     <Button 
-                    title = "Go Home"
-                    onPress={()=> this.props.navigation.navigate('Home')}
+                    title = "Go Back"
+                    onPress={()=> this.props.navigation.goBack()}
                     />
                 </View>
                 );

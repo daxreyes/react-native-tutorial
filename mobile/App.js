@@ -24,8 +24,8 @@ class DetailsScreen extends React.Component{
       <View style={styles.container}>
           <Text> Details Screen</Text>
           <Button 
-          title = "Go Home"
-          onPress={()=> this.props.navigation.navigate('Home')}
+          title = "Go Back"
+          onPress={()=> this.props.navigation.goBack()}
           />
       </View>
       );
