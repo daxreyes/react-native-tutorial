@@ -47,8 +47,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default StackNavigator(
-  {
+const RootStack = StackNavigator({
     Home: {
       screen: HomeScreen,
     },
@@ -60,3 +59,9 @@ export default StackNavigator(
     initialRouteName: 'Home',
   }
 );
+
+export default class App extends React.Component{
+  render(){
+      return <RootStack />
+  }
+}

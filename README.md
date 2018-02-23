@@ -56,6 +56,20 @@ React Native Quick Start
             },
         });
         ```
+    - create a `default class App`
+        ```
+        const RootStack =StackNavigator({
+            Home: {
+                screen: HomeScreen,
+            },
+        });
+
+        export default class App extends React.Component{
+            render(){
+                return <RootStack />
+            }
+        }
+        ```
 3. Utilize multiple screens and [navigate](https://reactnavigation.org/docs/navigating.html) them
     - import a button `import { Button, StyleSheet, Text, View } from 'react-native';`
     - add a Details Button
