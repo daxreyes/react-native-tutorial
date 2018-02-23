@@ -18,5 +18,12 @@ React Native Quick Start
    - cd [app name]
    - yarn start  
 4. Run the app via npm
+   - cd [app name]
    - npm start
 5. Open expo mobile app and scan QR code
+
+#### React Navigation
+
+1. Add react-navigation via yarn or npm
+   - yarn add react-navigation
+   - npm i react-navigation
