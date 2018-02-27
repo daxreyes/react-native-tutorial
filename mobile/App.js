@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
-import { StackNavigator } from 'react-navigation';
+import { StackNavigator, DrawerNavigator, DrawerItems, SafeAreaView } from 'react-navigation';
+import { Icon } from 'react-native-elements';
 
 class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -54,13 +55,35 @@ const styles = StyleSheet.create({
   },
 });
 
-const RootStack = StackNavigator(
+const HomeStack = StackNavigator(
   {
     Home: {
       screen: HomeScreen,
-    },
-    Details: {
-      screen: DetailsScreen
+      navigationOptions: ({ navigation }) => ({
+        title: 'App Home',
+        headerLeft: (
+          <Icon
+            name="bars"
+            // size={30}
+            type="font-awesome"
+            // iconStyle={{ paddingLeft: 10 }}
+            onPress={() => navigation.navigate('DrawerOpen')}
+          />
+        ),
+        drawerLabel: 'Home',
+        drawerIcon: ({ tintColor }) => (
+          <Icon
+            name="home"
+            // size={30}
+            // iconStyle={{
+            //   width: 30,
+            //   height: 30
+            // }}
+            type="font-awesome"
+            color={tintColor}
+          />
+        ),
+      }),
     },
   },
   {
@@ -74,6 +97,106 @@ const RootStack = StackNavigator(
         fontWeight: 'bold',
       },
     }
+  }
+);
+
+const DetailsStack = StackNavigator(
+  {
+    Details: {
+      screen: DetailsScreen,
+      navigationOptions: ({ navigation }) => ({
+        title: 'App Details',
+        headerLeft: (
+          <Icon
+            name="bars"
+            // size={30}
+            type="font-awesome"
+            // iconStyle={{ paddingLeft: 10 }}
+            onPress={() => navigation.navigate('DrawerOpen')}
+          />
+        ),
+        drawerLabel: 'Details',
+        drawerIcon: ({ tintColor }) => (
+          <Icon
+            name="users"
+            // size={30}
+            // iconStyle={{
+            //   width: 30,
+            //   height: 30
+            // }}
+            type="font-awesome"
+            color={tintColor}
+          />
+        ),
+      }),
+    },
+  },
+  {
+    initialRouteName: 'Details',
+    navigationOptions: {
+      headerStyle: {
+        backgroundColor: '#f4511e',
+      },
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+      },
+    }
+  }
+);
+
+
+const CustomDrawerContentComponent = props => (
+  <View style={{ flex: 1, 
+    // backgroundColor: '#43484d' 
+    backgroundColor: '#007AFF' 
+  }}>
+    <View
+      // style={{ marginTop: 40, justifyContent: 'center', alignItems: 'center' }}
+    >
+      <Icon
+        name="user-md"
+        // style={{ width: SCREEN_WIDTH * 0.57 }}
+        type="font-awesome"
+      />
+    </View>
+    <View 
+    // style={{marginLeft: 10}}
+    >
+      <DrawerItems {...props} />
+    </View>
+  </View>
+);
+
+const RootStack = DrawerNavigator(
+  {
+    Home: {
+      path: '/home',
+      screen: HomeStack,
+    },
+    Details: {
+      path: '/details',
+      screen: DetailsStack,
+    },
+  },
+  {
+    initialRouteName: 'Home',
+    contentOptions: {
+      activeTintColor: '#548ff7',
+      // activeTintColor: '#007AFF',
+      activeBackgroundColor: 'transparent',
+      inactiveTintColor: '#ffffff',
+      inactiveBackgroundColor: 'transparent',
+      // labelStyle: {
+      //   fontSize: 15,
+      //   marginLeft: 0,
+      // },
+    },
+    // drawerWidth: SCREEN_WIDTH * 0.8,
+    contentComponent: CustomDrawerContentComponent,
+    drawerOpenRoute: 'DrawerOpen',
+    drawerCloseRoute: 'DrawerClose',
+    drawerToggleRoute: 'DrawerToggle',
   }
 );
 
