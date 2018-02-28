@@ -275,3 +275,104 @@ React Native Quick Start
         }
         );
         ```
+5. Utilizing sqlite database with search
+    - import expo SQLite and create/open a database
+        ```
+        import Expo, { SQLite } from 'expo';
+        const db = SQLite.openDatabase('db.db');
+        ```
+    - in the main component initialize data within [componentDidMount](https://reactjs.org/docs/react-component.html)
+        ```
+        componentDidMount() {
+          db.transaction(tx => {
+            let queries = [
+              "DROP TABLE IF EXISTS docs",
+              "CREATE VIRTUAL TABLE docs USING fts4()",
+              "INSERT INTO docs(docid, content) VALUES(1, 'a database is a software system')",
+              "INSERT INTO docs(docid, content) VALUES(2, 'sqlite is a software system')",
+              "INSERT INTO docs(docid, content) VALUES(3, 'sqlite is a database')"
+            ]
+            queries.forEach((q,i)=>{
+              console.log('executing', q);
+              tx.executeSql(q,[],(_, { res })=>{console.log('suc', _, res);},(_, { err })=>{console.log('error', _, err);});
+            });
+          });
+        }
+        ```
+    - initialize a results state create a method for search query
+        ```
+        constructor(props) {
+          super(props);
+          this.state = {
+            query: null,
+            results: []
+          };
+        }
+        // other codes
+        ...
+
+        // experimental class fields syntax in order not to have to call bind
+        // https://reactjs.org/docs/handling-events.html
+        pressItem = (searchQuery) => {
+          console.log('press item query', searchQuery);
+          db.transaction(
+            tx => {
+              tx.executeSql("SELECT COUNT(*) FROM docs",[], (_, { rows }) =>
+                console.log('count', JSON.stringify(rows))
+              );
+              tx.executeSql("SELECT docid, content FROM docs WHERE docs MATCH ?",[searchQuery], (_, { rows }) =>{
+                console.log('fts query', JSON.stringify(rows));
+                this.setState({results: rows._array});
+              }
+              );
+            },);
+        };
+
+        ```
+    - import Input component and use inputted text as the query
+        ```
+        import { Icon, Input, List, ListItem } from 'react-native-elements';
+        import { Button, StyleSheet, Text, View, ScrollView } from 'react-native';
+        <ScrollView>
+        ...
+        <Input
+          // style={{
+          //   flex: 1,
+          //   padding: 5,
+          //   height: 40,
+          //   borderColor: 'gray',
+          //   borderWidth: 1,
+          // }}
+          maxLength = {40}
+          placeholder="what do you need to do?"
+          value={this.state.query}
+          onChangeText={(text) => {
+            console.log('text change', text);
+            this.setState({query: text})
+            if(text.length>=3){
+              this.pressItem(text);
+            }
+          }}
+          onSubmitEditing={() => {
+            this.pressItem(this.state.query);
+            // this.setState({ text: null });
+          }}
+        />
+        <Button
+        title = "Query"
+        onPress={()=> this.pressItem(this.state.query)}
+        />
+        <List containerStyle={{marginBottom: 20}}>
+          {
+            results.map((l, i) => (
+              <ListItem
+                // roundAvatar
+                // avatar={{uri:l.avatar_url}}
+                key={l.docid}
+                title={l.content}
+              />
+            ))
+          }
+        </List>
+        </ScrollView>
+        ```
