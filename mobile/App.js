@@ -1,7 +1,10 @@
 import React from 'react';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { Button, StyleSheet, Text, View, ScrollView } from 'react-native';
 import { StackNavigator, DrawerNavigator, DrawerItems, SafeAreaView } from 'react-navigation';
-import { Icon } from 'react-native-elements';
+import { Icon, Input, List, ListItem } from 'react-native-elements';
+import Expo, { SQLite } from 'expo';
+
+const db = SQLite.openDatabase('db.db');
 
 class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -30,18 +33,86 @@ class HomeScreen extends React.Component {
 }
 
 class DetailsScreen extends React.Component{
+  constructor(props) {
+    super(props);
+    this.state = {
+      query: null,
+      results: []
+    };
+  }
+  
   static navigationOptions = {
     title: 'Details',
   };
+  
+  // experimental class fields syntax in order not to have to call bind
+  // https://reactjs.org/docs/handling-events.html
+  pressItem = (searchQuery) => {
+    console.log('press item query', searchQuery);
+    db.transaction(
+      tx => {
+        tx.executeSql("SELECT COUNT(*) FROM docs",[], (_, { rows }) =>
+          console.log('count', JSON.stringify(rows))
+        );
+        tx.executeSql("SELECT docid, content FROM docs WHERE docs MATCH ?",[searchQuery], (_, { rows }) =>{
+          console.log('fts query', JSON.stringify(rows));
+          this.setState({results: rows._array});
+        }
+        );
+      },);
+  };
   render(){
-      return(
+    let results = this.state.results;
+    console.log('results', results);
+    return(
+      <ScrollView>
       <View style={styles.container}>
           <Text> Details Screen</Text>
           <Button 
           title = "Go Back"
           onPress={()=> this.props.navigation.goBack()}
           />
+          <Input
+            // style={{
+            //   flex: 1,
+            //   padding: 5,
+            //   height: 40,
+            //   borderColor: 'gray',
+            //   borderWidth: 1,
+            // }}
+            maxLength = {40}
+            placeholder="what do you need to do?"
+            value={this.state.query}
+            onChangeText={(text) => {
+              console.log('text change', text);
+              this.setState({query: text})
+              if(text.length>=3){
+                this.pressItem(text);
+              }
+            }}
+            onSubmitEditing={() => {
+              this.pressItem(this.state.query);
+              // this.setState({ text: null });
+            }}
+          />
+          <Button 
+          title = "Query"
+          onPress={()=> this.pressItem(this.state.query)}
+          />
       </View>
+      <List containerStyle={{marginBottom: 20}}>
+          {
+            results.map((l, i) => (
+              <ListItem
+                // roundAvatar
+                // avatar={{uri:l.avatar_url}}
+                key={l.docid}
+                title={l.content}
+              />
+            ))
+          }
+      </List>
+      </ScrollView>
       );
   }
 }
@@ -201,6 +272,22 @@ const RootStack = DrawerNavigator(
 );
 
 export default class App extends React.Component{
+  componentDidMount() {
+    db.transaction(tx => {
+      let queries = [
+        "DROP TABLE IF EXISTS docs",
+        "CREATE VIRTUAL TABLE docs USING fts4()",
+        "INSERT INTO docs(docid, content) VALUES(1, 'a database is a software system')",
+        "INSERT INTO docs(docid, content) VALUES(2, 'sqlite is a software system')",
+        "INSERT INTO docs(docid, content) VALUES(3, 'sqlite is a database')"
+      ]
+      queries.forEach((q,i)=>{
+        console.log('executing', q);
+        tx.executeSql(q,[],(_, { res })=>{console.log('suc', _, res);},(_, { err })=>{console.log('error', _, err);});
+      });
+    });
+  }
+
   render(){
       return <RootStack />
   }
