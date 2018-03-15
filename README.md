@@ -376,3 +376,123 @@ React Native Quick Start
         </List>
         </ScrollView>
         ```
+6. Modularizing your code for readability and maintenability
+    - within the `[app name]` directory create `app` directory and related files
+        ```
+        [app name]
+        ├── App.js
+        ├── app
+            ├── containers
+            │   ├── Details.js
+            │   └── Home.js
+            ├── lib
+            │   └── DB.js
+            └── styles.js
+        
+
+        ```
+    - Create a DB [Singleton](https://en.wikipedia.org/wiki/Singleton_pattern) in `[app name]/app/lib/DB.js`
+        ```
+        // app/containers/Home.js
+        import { SQLite } from 'expo';
+        import { Platform } from 'react-native';
+
+
+        class DB {
+            constructor(sqliteModule=SQLite, name='db.db') {
+                if (!DB._instance) {
+                console.log(`Opening Database for ${Platform.OS}, ${sqliteModule}, ${name}`);
+                // https://github.com/andpor/react-native-sqlite-storage/issues/184
+                this.conn = sqliteModule.openDatabase(name);
+                this.conn.transaction((tx)=>{
+                    tx.executeSql("SELECT SQLITE_VERSION() AS version", [], 
+                    (_, rs) => {
+                        console.log('Got version result: ' + rs.rows.item(0).version);
+                    },
+                    (_, error) => {
+                    console.log('db test error:', error)
+                    });
+                }, this.errorCB, this.successCB);
+                DB._instance = this;
+                }
+                return DB._instance
+            }
+            errorCB(err) {
+                console.log("SQL Error: " + err);
+                throw new Error(`DB transaction error ${err}`);
+            }
+
+            successCB() {
+                console.log("SQL executed fine");
+            }
+
+            query(q,params=[],cb,eb){
+                this.conn.transaction(
+                (tx)=>{
+                    tx.executeSql(q,params,cb,eb)
+                },
+                this.errorCB,
+                this.successCB,
+                )
+            }
+        }
+        ```
+    - Remove `Homestack` and `HomeScreen` code `App.js` and put them in the file `[app name]/app/containers/Home.js`. Import the `HomeStack` component in the main file `App.js`
+        ```
+        // App.js
+        import HomeStack from './app/containers/Home'
+
+        // app/containers/Home.js
+        import React from 'react'
+        import { StackNavigator } from 'react-navigation'
+        import { Button, Text, View } from 'react-native';
+        import { Icon } from 'react-native-elements';
+        import { appStyle } from '../styles'
+        
+        class HomeScreen extends React.Component {
+            ....
+        }
+        const HomeStack = StackNavigator({
+          Home: {
+          screen: HomeScreen,
+          ...
+          }
+        })
+
+        export default HomeStack;
+        ```
+    - Remove `DetailsStack` and `DetailsScreen` code in `App.js` and put them in the file `[app name]/app/containers/Details.js`. Import the `DetailsStack` component in the main file `App.js`
+        ```
+        // App.js
+        import DetailsStack from './app/containers/Details'
+
+        // app/containers/Details.js
+        import React from 'react'
+        import { Button, Text, View, ScrollView } from 'react-native';
+        import { StackNavigator } from 'react-navigation'
+        import { Icon, Input, List, ListItem } from 'react-native-elements';
+        import { appStyle } from '../styles'
+        import DB from '../lib/DB'
+        
+        const db =  new DB()
+
+        class DetailsScreen extends React.Component{
+            constructor(props) {
+                ...
+            }
+        }
+        ```
+    - Remove `styles` `Stylesheet` component in App.js and rename styles as `appstyles` put the code in the file `[app name]/app/styles.js`. Import appstyles `stylesheet` component in the main file `App.js`.
+        ```
+        // app/styles.js
+        import { StyleSheet } from 'react-native';
+        
+        export const appStyle = StyleSheet.create({
+          container: {
+            flex: 1,
+            backgroundColor: '#fff',
+            alignItems: 'center',
+            justifyContent: 'center',
+          },
+        });
+        ```
