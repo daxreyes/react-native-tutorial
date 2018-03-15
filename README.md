@@ -1,11 +1,11 @@
-React Native Quick Start
-========================
+React Native Quick Start Using [Expo](https://expo.io/)
+=======================================================
 
 ### Prerequisites:
 
 1. [nodejs/npm](https://nodejs.org/en/)
 2. expo mobile app [ios](https://itunes.apple.com/app/apple-store/id982107779) / [android](https://play.google.com/store/apps/details?id=host.exp.exponent)
-
+3. [yarn](https://yarnpkg.com/en/docs/install)
 ### Steps
 
 #### Default App
@@ -461,7 +461,7 @@ React Native Quick Start
 
         export default HomeStack;
         ```
-    - Remove `DetailsStack` and `DetailsScreen` code in `App.js` and put them in the file `[app name]/app/containers/Details.js`. Import the `DetailsStack` component in the main file `App.js`
+    - Remove `DetailsStack` and `DetailsScreen` code in `App.js` and put them in the file `[app name]/app/containers/Details.js`. Import the `DB` class from `../lib/DB` and instantiate.  Import the `DetailsStack` component in the main file `App.js` 
         ```
         // App.js
         import DetailsStack from './app/containers/Details'
@@ -481,6 +481,16 @@ React Native Quick Start
                 ...
             }
         }
+
+        const DetailsStack = StackNavigator(
+        {
+            Details: {
+            screen: DetailsScreen,
+                ...
+            }
+        }
+
+        export default DetailsStack
         ```
     - Remove `styles` `Stylesheet` component in App.js and rename styles as `appstyles` put the code in the file `[app name]/app/styles.js`. Import appstyles `stylesheet` component in the main file `App.js`.
         ```
