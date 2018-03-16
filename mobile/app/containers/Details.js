@@ -16,10 +16,6 @@ class DetailsScreen extends React.Component{
     };
   }
   
-  static navigationOptions = {
-    title: 'Details',
-  };
-  
   // experimental class fields syntax in order not to have to call bind
   // https://reactjs.org/docs/handling-events.html
   pressItem = (searchQuery) => {
