@@ -6,6 +6,7 @@ import { Icon, Input, List, ListItem } from 'react-native-elements';
 import DB from './app/lib/DB'
 import HomeStack from './app/containers/Home'
 import DetailsStack from './app/containers/Details'
+import EtcStack from './app/containers/Etc'
 // import Expo, { SQLite } from 'expo';
 
 const db = new DB()
@@ -42,6 +43,10 @@ const RootStack = DrawerNavigator(
       path: '/details',
       screen: DetailsStack,
     },
+    Etc: {
+      path: '/etc',
+      screen: EtcStack
+    }
   },
   {
     initialRouteName: 'Home',
