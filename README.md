@@ -1,11 +1,26 @@
 React Native Quick Start Using [Expo](https://expo.io/)
 =======================================================
 
+### Summary
+
+This is a guide for people starting looking to do Mobile App Development using React Native.
+At the end of this guide the expected result is an app with the following functionality
+
+1. Header with menu that shows the slider/drawer
+2. Button displaying alert box
+3. Display full text search result of internal database
+
+Below is the expected output
+
+![App](app.gif)
+
+
 ### Prerequisites:
 
 1. [nodejs/npm](https://nodejs.org/en/)
 2. expo mobile app [ios](https://itunes.apple.com/app/apple-store/id982107779) / [android](https://play.google.com/store/apps/details?id=host.exp.exponent)
-3. [yarn](https://yarnpkg.com/en/docs/install)
+3. Optional [yarn](https://yarnpkg.com/en/docs/install)
+
 ### Steps
 
 #### Default App
