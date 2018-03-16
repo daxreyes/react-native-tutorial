@@ -166,7 +166,10 @@ React Native Quick Start Using [Expo](https://expo.io/)
         }
         ```
 4. Add a [Drawer/Slider](https://reactnavigation.org/docs/drawer-based-navigation.html) with multiple screens
-    - add react-native-elements `yarn add react-native-elements@1.0.0-beta2`
+    - add react-native-elements 
+        ```
+        yarn add react-native-elements@1.0.0-beta3
+        ```
     - import Icons and DrawerNavigator
         ```
         import { StackNavigator, DrawerNavigator, DrawerItems, SafeAreaView } from 'react-navigation';
