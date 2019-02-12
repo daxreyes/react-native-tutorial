@@ -10,7 +10,7 @@ At the end of this guide the expected result is an app with the following functi
 2. Button displaying alert box
 3. Display full text search result of internal database
 
-Below is the expected output
+Below is the expected output.
 
 ![App](app.gif)
 
